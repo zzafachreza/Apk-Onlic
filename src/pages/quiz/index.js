@@ -42,7 +42,7 @@ export default function Quiz({ navigation }) {
             <MyGap jarak={20}/>
 
   {/* TINGKAT 2 */}
-  <TouchableWithoutFeedback>
+  <TouchableWithoutFeedback onPress={() => navigation.navigate('QuizTingkatKedua')}>
                 <View style={{padding:10, backgroundColor:colors.white, borderWidth:2, borderRadius:10, 
                 borderColor:'#dedede', flexDirection:"row", justifyContent:"center"}}>
 
@@ -62,7 +62,7 @@ export default function Quiz({ navigation }) {
 
                             <MyGap jarak={20}/>
   {/* TINGKAT 3 */}
-  <TouchableWithoutFeedback>
+  <TouchableWithoutFeedback onPress={() => navigation.navigate('QuizTingkatTiga')}>
                 <View style={{padding:10, backgroundColor:colors.white, borderWidth:2, borderRadius:10, 
                 borderColor:'#dedede', flexDirection:"row", justifyContent:"center"}}>
 

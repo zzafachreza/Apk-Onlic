@@ -83,7 +83,7 @@ export default function BottomNavigator({ state, descriptors, navigation }) {
         if (label === 'Home') {
           iconName = 'home-outline';
           Newlabel = '';
-        } else if (label === 'History') {
+        } else if (label === 'Logout') {
           iconName = 'log-out-outline';
           Newlabel = '';
         }  else if (label === 'Account') {
