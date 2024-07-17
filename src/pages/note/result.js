@@ -1,11 +1,34 @@
-import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
-import React from 'react';
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Alert, Image, ActivityIndicator, Linking } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { MyHeader } from '../../components';
 import { colors, fonts } from '../../utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { apiURL } from '../../utils/localStorage';
+import { showMessage } from 'react-native-flash-message';
+import { useIsFocused } from '@react-navigation/native';
+import Share from 'react-native-share';
 
 export default function ResultNote({ route, navigation }) {
-    const { note } = route.params;
+    const [note, setNotes] = useState(route.params);
+    const [loading, setlLoading] = useState(false);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (isFocused) {
+            __getData();
+        }
+    }, [isFocused]);
+
+    const __getData = () => {
+        setlLoading(true);
+        axios.post(apiURL + 'detail_notes', {
+            id_notes: route.params.id_notes
+        }).then(res => {
+            setNotes(res.data[0]);
+            setlLoading(false);
+        })
+    }
 
     const backPage = () => {
         navigation.goBack()
@@ -14,15 +37,15 @@ export default function ResultNote({ route, navigation }) {
 
     const deleteNote = async () => {
         try {
-            const savedNotes = await AsyncStorage.getItem('notes');
-            if (savedNotes) {
-                const notes = JSON.parse(savedNotes);
-                const updatedNotes = notes.filter(n => n.title !== note.title || n.timestamp !== note.timestamp);
-                await AsyncStorage.setItem('notes', JSON.stringify(updatedNotes));
-                Alert.alert('Success', 'Note deleted successfully!', [
-                    { text: "OK", onPress: () => navigation.navigate('Notes') }
-                ]);
-            }
+            axios.post(apiURL + 'delete_notes', {
+                id_notes: note.id_notes
+            }).then(res => {
+                console.log(res.data);
+                if (res.data == 200) {
+                    showMessage({ type: 'success', message: 'Berhasil dihapus!' });
+                    navigation.goBack()
+                }
+            })
         } catch (error) {
             Alert.alert('Error', 'Failed to delete the note.');
         }
@@ -30,33 +53,55 @@ export default function ResultNote({ route, navigation }) {
 
     const shareNote = () => {
         // Logic to share the note
-        Alert.alert('Share', 'Share functionality is not implemented yet.');
+
+        // navigation.navigate('https://onlic.okeadmin.com/linking/notes/?id_notes' + note.id_notes)
+        Share.open({
+            url: 'https://onlic.okeadmin.com/linking/notes?id_notes=' + note.id_notes
+
+        })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                err && console.log(err);
+            });
     };
 
     const editNote = () => {
-        navigation.navigate('InputNote', { note });
+        navigation.navigate('EditNotes', note);
     };
 
     return (
         <ImageBackground source={require('../../assets/bgsplash.png')} style={styles.background}>
-            <MyHeader judul="My Notes" onPress={backPage}/>
-            <View style={styles.container}>
-                <Text style={styles.label}>Judul :</Text>
-                <Text style={styles.noteTitle}>{note.title}</Text>
-                <Text style={styles.label}>Isi :</Text>
-                <Text style={styles.noteContent}>{note.content}</Text>
-            </View>
-            <View style={styles.iconContainer}>
-                <TouchableOpacity onPress={editNote}>
-                    <Image style={styles.icon} source={require('../../assets/edit.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={deleteNote}>
-                    <Image style={styles.icondelete} source={require('../../assets/delete.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={shareNote}>
-                    <Image style={styles.icon} source={require('../../assets/share.png')} />
-                </TouchableOpacity>
-            </View>
+            <MyHeader judul="My Notes" onPress={backPage} />
+            {!loading &&
+                <>
+                    <View style={styles.container}>
+                        <Text style={styles.label}>Judul :</Text>
+                        <Text style={styles.noteTitle}>{note.judul}</Text>
+                        <Text style={styles.label}>Isi :</Text>
+                        <Text style={styles.noteContent}>{note.isi}</Text>
+
+                    </View>
+                    <View style={styles.iconContainer}>
+                        <TouchableOpacity onPress={editNote}>
+                            <Image style={styles.icon} source={require('../../assets/edit.png')} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={deleteNote}>
+                            <Image style={styles.icondelete} source={require('../../assets/delete.png')} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={shareNote}>
+                            <Image style={styles.icon} source={require('../../assets/share.png')} />
+                        </TouchableOpacity>
+                    </View>
+                </>
+            }
+
+            {
+                loading && <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size="large" color={colors.primary} />
+                </View>
+            }
         </ImageBackground>
     );
 }

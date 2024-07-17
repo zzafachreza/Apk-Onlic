@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Splash, Home, Account, AccountEdit, TeknisiHome, AccountTeknisi, History, Tumbuhanmu, Quiz, TingkatSatu, NotesPage, InputNote, ResultNote, TingkatDua, Logout } from '../pages';
+import { Splash, Home, Account, AccountEdit, TeknisiHome, AccountTeknisi, History, Tumbuhanmu, Quiz, TingkatSatu, NotesPage, InputNote, ResultNote, TingkatDua, Logout, EditNotes, Riwayat, Detail, Edit } from '../pages';
 import { colors } from '../utils';
 import { BottomNavigator, TeknisiBottomNavigator } from '../components';
 import TingkatTiga from '../pages/quiz/tingkattiga';
@@ -45,6 +45,38 @@ export default function Router() {
       <Stack.Screen
         name="Splash"
         component={Splash}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Riwayat"
+        component={Riwayat}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Edit"
+        component={Edit}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="EditNotes"
+        component={EditNotes}
         options={{
           headerShown: false,
         }}
@@ -114,7 +146,7 @@ export default function Router() {
         }}
       />
 
-  
+
       <Stack.Screen
         name="Account"
         component={Account}

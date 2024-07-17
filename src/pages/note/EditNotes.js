@@ -7,10 +7,10 @@ import { showMessage } from 'react-native-flash-message';
 import axios from 'axios';
 import { apiURL } from '../../utils/localStorage';
 
-export default function InputNote({ navigation, route }) {
-    const mac = route.params.mac;
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+export default function EditNotes({ navigation, route }) {
+    const item = route.params;
+    const [title, setTitle] = useState(route.params.judul);
+    const [content, setContent] = useState(route.params.isi);
     const backPage = () => {
         navigation.goBack()
     };
@@ -22,10 +22,10 @@ export default function InputNote({ navigation, route }) {
             } else if (content.length == 0) {
                 showMessage({ message: 'isi wajib diisi' })
             } else {
-                axios.post(apiURL + 'add_notes', {
+                axios.post(apiURL + 'edit_notes', {
+                    id_notes: route.params.id_notes,
                     judul: title,
-                    isi: content,
-                    uid: mac
+                    isi: content
                 }).then(res => {
                     console.log(res.data);
                     if (res.data == 200) {
@@ -33,7 +33,7 @@ export default function InputNote({ navigation, route }) {
                             type: 'success',
                             message: 'Berhasil di simpan !'
                         });
-                        navigation.goBack();
+                        navigation.pop(2);
                     }
                 })
             }

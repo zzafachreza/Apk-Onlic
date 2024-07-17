@@ -33,6 +33,19 @@ xmlns:tools="http://schemas.android.com/tools"
             <category android:name="android.intent.category.LAUNCHER" />
              <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>     
         </intent-filter>
+         <intent-filter android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https"
+                  android:host="onlic.okeadmin.com" />
+        </intent-filter>
+        <intent-filter android:label="filter_react_native">
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="onlic" />
+        </intent-filter>
       </activity>
     </application>
 </manifest>

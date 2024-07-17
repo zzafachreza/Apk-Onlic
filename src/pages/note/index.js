@@ -4,8 +4,11 @@ import { useIsFocused } from '@react-navigation/native';
 import { MyHeader } from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors, fonts } from '../../utils';
+import axios from 'axios';
+import { apiURL } from '../../utils/localStorage';
 
-export default function NotesPage({ navigation }) {
+export default function NotesPage({ navigation, route }) {
+    const mac = route.params.mac;
     const [notes, setNotes] = useState([]);
     const isFocused = useIsFocused();
 
@@ -13,36 +16,41 @@ export default function NotesPage({ navigation }) {
         navigation.goBack()
     };
 
+    const __getData = () => {
+        axios.post(apiURL + 'notes', {
+            mac: mac
+        }).then(res => {
+            console.log(res.data);
+            setNotes(res.data)
+        })
+    }
 
     useEffect(() => {
-        const fetchNotes = async () => {
-            const savedNotes = await AsyncStorage.getItem('notes');
-            if (savedNotes) {
-                setNotes(JSON.parse(savedNotes));
-            }
-        };
-        fetchNotes();
+        __getData()
     }, [isFocused]); // Refresh notes when screen is focused
 
     return (
         <ImageBackground source={require('../../assets/bgsplash.png')} style={styles.background}>
-            <MyHeader judul="My Notes"  onPress={backPage}/>
+            <MyHeader judul="My Notes" onPress={backPage} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.container}>
                     {notes.map((note, index) => (
-                        <TouchableOpacity 
-                            key={index} 
-                            style={styles.noteContainer} 
-                            onPress={() => navigation.navigate('ResultNotes', { note })}
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.noteContainer}
+                            onPress={() => navigation.navigate('ResultNotes', note)}
                         >
-                            <Text style={styles.noteTitle}>{note.title}</Text>
-                            <Text style={styles.noteDate}>{note.timestamp}</Text>
+                            <Text style={styles.noteTitle}>{note.judul}</Text>
+                            {/* <Text style={styles.noteDate}>{note.isi}</Text> */}
+                            <Text style={styles.noteDate}>{note.last_update}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
             </ScrollView>
             <View style={styles.addButtonContainer}>
-                <TouchableWithoutFeedback onPress={() => navigation.navigate('InputNotes')}>
+                <TouchableWithoutFeedback onPress={() => navigation.navigate('InputNotes', {
+                    mac: mac
+                })}>
                     <View>
                         <Image style={styles.addButton} source={require('../../assets/plus.png')} />
                     </View>
@@ -83,6 +91,12 @@ const styles = StyleSheet.create({
     },
     noteDate: {
         fontSize: 14,
+        fontFamily: fonts.primary[400],
+        color: 'gray',
+        marginTop: 5
+    },
+    noteDateTgl: {
+        fontSize: 12,
         fontFamily: fonts.primary[400],
         color: 'gray',
         marginTop: 5

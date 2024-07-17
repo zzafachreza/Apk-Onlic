@@ -1,12 +1,12 @@
 import { View, Text, ImageBackground, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import { MyButton, MyHeader } from '../../components';
+import { MyButton, MyGap, MyHeader } from '../../components';
 import { launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 import Sound from 'react-native-sound';
 import RNFS from 'react-native-fs';
 import axios from 'axios';
-import { apiURL } from '../../utils/localStorage';
+import { apiURL, webURL } from '../../utils/localStorage';
 import { showMessage } from 'react-native-flash-message';
 import { colors } from '../../utils';
 
@@ -15,7 +15,8 @@ const pauseIcon = require('../../assets/pause.png');
 const saveIcon = require('../../assets/save.png'); // Assuming you have a save icon
 const shareIcon = require('../../assets/share.png'); // Assuming you have a share icon
 
-export default function Tumbuhanmu({ navigation }) {
+export default function Edit({ navigation, route }) {
+    const item = route.params;
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedAudio, setSelectedAudio] = useState(null);
     const [audioName, setAudioName] = useState(null);
@@ -23,8 +24,8 @@ export default function Tumbuhanmu({ navigation }) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [showSaveShare, setShowSaveShare] = useState(false);
     const [kirim, setKirim] = useState({
-        audio: {},
-        gambar: {},
+        audio: null,
+        gambar: null,
     })
 
     const backPage = () => {
@@ -119,22 +120,37 @@ export default function Tumbuhanmu({ navigation }) {
 
         const sendData = new FormData();
 
-        sendData.append('gambar', {
-            name: kirim.gambar.fileName,
-            type: kirim.gambar.type,
-            uri: kirim.gambar.uri,
-        })
+        sendData.append('id_desain', item.id_desain);
+        sendData.append('gambar_old', item.gambar);
+        sendData.append('audio_old', item.audio);
 
-        sendData.append('audio', {
-            name: kirim.audio.name,
-            type: kirim.audio.type,
-            uri: kirim.audio.uri,
-        });
 
-        axios.post(apiURL + 'insert_desain', sendData).then(res => {
+        if (kirim.gambar !== null) {
+            sendData.append('gambar', {
+                name: kirim.gambar.fileName,
+                type: kirim.gambar.type,
+                uri: kirim.gambar.uri,
+            })
+        }
+
+        if (kirim.audio !== null) {
+            sendData.append('audio', {
+                name: kirim.audio.name,
+                type: kirim.audio.type,
+                uri: kirim.audio.uri,
+            });
+
+        }
+
+        console.log(sendData)
+
+
+
+
+        axios.post(apiURL + 'update_desain', sendData).then(res => {
             console.log(res.data);
             if (res.data == 200) {
-                showMessage({ type: 'success', message: 'Desain Tumbuhanmu berhasil disimpan !' });
+                showMessage({ type: 'success', message: 'Desain Tumbuhanmu berhasil diupdate !' });
                 navigation.goBack();
             }
         })
@@ -143,55 +159,51 @@ export default function Tumbuhanmu({ navigation }) {
 
     return (
         <ImageBackground source={require('../../assets/bgsplash.png')} style={styles.background}>
-            <MyHeader judul="Desain Tumbuhanmu" onPress={backPage} />
+            <MyHeader judul="Edit Desain Tumbuhanmu" onPress={backPage} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.uploadContainer}>
                     <TouchableOpacity onPress={pickImage} style={styles.uploadButton}>
                         {selectedImage ? (
                             <Image source={{ uri: selectedImage }} style={styles.selectedImage} resizeMode="contain" />
                         ) : (
-                            <Image source={require('../../assets/iconuploadgambar.png')} style={styles.uploadIcon} />
+                            <Image source={{
+                                uri: webURL + item.gambar
+                            }} style={styles.selectedImage} />
                         )}
                     </TouchableOpacity>
-                    <Text style={styles.uploadText}>*Ukuran maksimal 5 MB</Text>
+                    <Text style={styles.uploadText}>*Ukuran maksimal 5 MB (abaikan jika tidak diubah)</Text>
                 </View>
-                {selectedImage && (
-                    <View style={styles.audioContainer}>
-                        {!selectedAudio && (
-                            <TouchableOpacity onPress={pickAudio} style={styles.audioButton}>
-                                <Image source={require('../../assets/uploadaudio.png')} style={styles.audioIcon} />
+
+                <View style={styles.audioContainer}>
+                    {!selectedAudio && (
+                        <TouchableOpacity onPress={pickAudio} style={styles.audioButton}>
+                            <Image source={require('../../assets/uploadaudio.png')} style={styles.audioIcon} />
+                            <Text> (abaikan jika tidak diubah)</Text>
+                        </TouchableOpacity>
+                    )}
+                    {selectedAudio && (
+                        <View style={styles.audioControlContainer}>
+
+                            <TouchableOpacity onPress={isPlaying ? pauseAudio : playAudio} style={styles.playButton}>
+                                <Image source={isPlaying ? pauseIcon : playIcon} style={styles.playIcon} />
                             </TouchableOpacity>
-                        )}
-                        {selectedAudio && (
-                            <View style={styles.audioControlContainer}>
-                                {showSaveShare ? (
-                                    <>
-                                        <TouchableOpacity onPress={simpan} style={styles.saveButton}>
-                                            <Image source={saveIcon} style={styles.saveIcon} />
-                                            <Text style={styles.saveText}>Simpan</Text>
-                                        </TouchableOpacity>
-                                        {/* <TouchableOpacity style={styles.shareButton}>
-                                            <Image source={shareIcon} style={styles.shareIcon} />
-                                            <Text style={styles.shareText}>Bagikan</Text>
-                                        </TouchableOpacity> */}
-                                    </>
-                                ) : (
-                                    <>
-                                        <TouchableOpacity onPress={isPlaying ? pauseAudio : playAudio} style={styles.playButton}>
-                                            <Image source={isPlaying ? pauseIcon : playIcon} style={styles.playIcon} />
-                                        </TouchableOpacity>
-                                        <Text style={styles.audioText}>{audioName}</Text>
-                                        <TouchableOpacity onPress={handleOk} style={styles.okButton}>
-                                            <Text style={styles.okText}>Ok</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                )}
-                            </View>
-                        )}
-                    </View>
-                )}
+                            <Text style={styles.audioText}>{audioName}</Text>
+
+
+
+                        </View>
+                    )}
+
+                    <MyGap jarak={20} />
+
+                    <TouchableOpacity onPress={simpan} style={styles.saveButton}>
+                        <Image source={saveIcon} style={styles.saveIcon} />
+                        <Text style={styles.saveText}>Simpan Perubahan</Text>
+                    </TouchableOpacity>
+                </View>
+
             </ScrollView>
-            <MyButton onPress={() => navigation.navigate('Riwayat')} warna={colors.primary} Icons="list" iconColor={colors.white} radius={0} title="Hasil Desain Tumbuhan" colorText={colors.white} />
+            {/* <MyButton onPress={() => navigation.navigate('Riwayat')} warna={colors.primary} Icons="list" iconColor={colors.white} radius={0} title="Hasil Desain Tumbuhan" colorText={colors.white} /> */}
         </ImageBackground>
     );
 }
