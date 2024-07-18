@@ -52,8 +52,8 @@ const questions = [
         correctAnswer: 1
     },
 
-     //NOMOR 5
-     {
+    //NOMOR 5
+    {
         question: 'Tumbuhan yang hidup di air disebut...',
         options: [
             { label: 'a. Terestrial', value: 0 },
@@ -64,8 +64,8 @@ const questions = [
         correctAnswer: 2
     },
 
-      //NOMOR 6
-      {
+    //NOMOR 6
+    {
         question: 'Bagian bunga yang berkembang menjadi buah adalah...',
         options: [
             { label: 'a. Putik', value: 0 },
@@ -77,8 +77,8 @@ const questions = [
     },
 
 
-      //NOMOR 7
-      {
+    //NOMOR 7
+    {
         question: 'Zat hijau daun yang berperan dalam fotosintesis adalah...',
         options: [
             { label: 'a. Hemoglobin', value: 0 },
@@ -90,8 +90,8 @@ const questions = [
     },
 
 
-      //NOMOR 8
-      {
+    //NOMOR 8
+    {
         question: 'Akar yang tumbuh ke samping dan berfungsi sebagai penyangga adalah...',
         options: [
             { label: 'a. Akar serabut', value: 0 },
@@ -103,8 +103,8 @@ const questions = [
     },
 
 
-      //NOMOR 9
-      {
+    //NOMOR 9
+    {
         question: 'Bagian tumbuhan yang berfungsi menyerap air dan mineral dari tanah adalah...',
         options: [
             { label: 'a. Daun', value: 0 },
@@ -116,8 +116,8 @@ const questions = [
     },
 
 
-      //NOMOR 10
-      {
+    //NOMOR 10
+    {
         question: 'Bagian bunga yang berfungsi menarik perhatian serangga adalah…',
         options: [
             { label: 'a. Kelopak', value: 0 },
@@ -129,8 +129,8 @@ const questions = [
     },
 
 
-     // NOMOR 11
-     {
+    // NOMOR 11
+    {
         question: 'Tumbuhan yang daunnya selalu hijau sepanjang tahun disebut...',
         options: [
             { label: 'a. Tumbuhan semusim', value: 0 },
@@ -177,8 +177,8 @@ const questions = [
         correctAnswer: 3
     },
 
-     //NOMOR 15
-     {
+    //NOMOR 15
+    {
         question: 'Buah yang berkembang dari satu bunga dengan satu putik disebut...',
         options: [
             { label: 'a. Buah majemuk', value: 0 },
@@ -189,8 +189,8 @@ const questions = [
         correctAnswer: 2
     },
 
-      //NOMOR 16
-      {
+    //NOMOR 16
+    {
         question: 'Tumbuhan yang tidak berbunga disebut...',
         options: [
             { label: 'a. Paku-pakuan', value: 0 },
@@ -202,8 +202,8 @@ const questions = [
     },
 
 
-      //NOMOR 17
-      {
+    //NOMOR 17
+    {
         question: 'Fungsi stomata pada daun adalah untuk...',
         options: [
             { label: 'a. Menyerap air', value: 0 },
@@ -215,8 +215,8 @@ const questions = [
     },
 
 
-      //NOMOR 18
-      {
+    //NOMOR 18
+    {
         question: 'Tumbuhan yang menyerap air dari udara menggunakan akar gantung adalah...',
         options: [
             { label: 'a. Anggrek', value: 0 },
@@ -228,8 +228,8 @@ const questions = [
     },
 
 
-      //NOMOR 19
-      {
+    //NOMOR 19
+    {
         question: 'Tumbuhan yang berkembang biak dengan spora adalah...',
         options: [
             { label: 'a. Jagung', value: 0 },
@@ -241,8 +241,8 @@ const questions = [
     },
 
 
-      //NOMOR 20
-      {
+    //NOMOR 20
+    {
         question: 'Hasil fotosintesis pada tumbuhan adalah...',
         options: [
             { label: 'a. Karbon dioksida dan air', value: 0 },
@@ -286,13 +286,13 @@ export default function TingkatSatu({ navigation }) {
 
     return (
         <ImageBackground source={require('../../assets/bgsplash.png')} style={styles.background}>
-            <MyHeader judul="Yuk Coba Quiz Menarik!" onPress={backPage}/>
+            <MyHeader judul="Yuk Coba Quiz Menarik!" onPress={backPage} />
             {showScore ? (
                 <View style={styles.scoreContainer}>
                     <Image source={require('../../assets/badge.png')} style={styles.scoreIcon} />
                     <Text style={styles.scoreText}>Skor Quiz</Text>
                     <Text style={styles.levelText}>Tingkat 1</Text>
-                    <Text style={styles.score}>{score * 25}</Text>
+                    <Text style={styles.score}>{score * 5}</Text>
                     <TouchableOpacity onPress={restartQuiz} style={styles.button}>
                         <Text style={styles.buttonText}>Kerjakan Soal Lagi</Text>
                     </TouchableOpacity>
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding:10
+        padding: 10
     },
     scoreIcon: {
         width: 100,

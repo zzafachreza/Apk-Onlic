@@ -22,9 +22,11 @@ export default function Home({ navigation, route }) {
 
   const _getTransaction = async () => {
 
+
+
     DeviceInfo.getMacAddress().then((mac) => {
       // "E5:12:D8:E5:69:97"
-      console.log(mac);
+      // console.log(mac);
       setMac(mac);
       storeData('mac', mac)
     });
@@ -37,13 +39,43 @@ export default function Home({ navigation, route }) {
     await axios.post(apiURL + 'company').then(res => {
       setComp(res.data.data);
     });
+    getUrlAsync();
   }
+
+  const getUrlAsync = async () => {
+    let initialUrl = await Linking.getInitialURL();
+    console.log(initialUrl);
+    if (initialUrl === null) {
+      return;
+    }
+
+    if (initialUrl.includes('ResultNotes')) {
+      let ID = initialUrl.split("ResultNotes/")[1];
+      navigation.replace('ResultNotes', {
+        id_notes: ID
+      });
+
+    } else if (initialUrl.includes('Detail')) {
+      let ID = initialUrl.split("Detail/")[1];
+      navigation.replace('Detail', {
+        id_desain: ID
+      });
+
+    }
+  };
 
   useEffect(() => {
     if (isFocus) {
       _getTransaction();
     }
+
+
+    // getUrlAsync();
+
   }, [isFocus]);
+
+
+
 
   const __renderItem = ({ item }) => {
     return (

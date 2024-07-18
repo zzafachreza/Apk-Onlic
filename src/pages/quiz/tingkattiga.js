@@ -13,7 +13,7 @@ const questions = [
             { label: 'Giberelin', value: 2 },
             { label: 'Sitokinin', value: 3 }
         ],
-        correctAnswer: 1
+        correctAnswer: 0
     },
 
     // NOMOR 2
@@ -49,7 +49,7 @@ const questions = [
             { label: 'Membran tilakoid', value: 2 },
             { label: 'Sitoplasma', value: 3 }
         ],
-        correctAnswer: 1
+        correctAnswer: 2
     },
 
     // NOMOR 5
@@ -273,13 +273,13 @@ export default function TingkatTiga({ navigation }) {
 
     return (
         <ImageBackground source={require('../../assets/bgsplash.png')} style={styles.background}>
-            <MyHeader judul="Yuk Coba Quiz Menarik!" onPress={backPage}/>
+            <MyHeader judul="Yuk Coba Quiz Menarik!" onPress={backPage} />
             {showScore ? (
                 <View style={styles.scoreContainer}>
                     <Image source={require('../../assets/badge.png')} style={styles.scoreIcon} />
                     <Text style={styles.scoreText}>Skor Quiz</Text>
                     <Text style={styles.levelText}>Tingkat 1</Text>
-                    <Text style={styles.score}>{score * 25}</Text>
+                    <Text style={styles.score}>{score * 5}</Text>
                     <TouchableOpacity onPress={restartQuiz} style={styles.button}>
                         <Text style={styles.buttonText}>Kerjakan Soal Lagi</Text>
                     </TouchableOpacity>
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding:10
+        padding: 10
     },
     scoreIcon: {
         width: 100,

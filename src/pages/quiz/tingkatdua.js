@@ -52,8 +52,8 @@ const questions = [
         correctAnswer: 0
     },
 
-     //NOMOR 5
-     {
+    //NOMOR 5
+    {
         question: 'Jaringan pada daun yang mengandung kloroplas adalah...',
         options: [
             { label: 'a. Palisade', value: 0 },
@@ -64,8 +64,8 @@ const questions = [
         correctAnswer: 0
     },
 
-      //NOMOR 6
-      {
+    //NOMOR 6
+    {
         question: 'Bagian bunga yang berfungsi melindungi bunga saat masih kuncup adalah...',
         options: [
             { label: 'a. Kelopak', value: 0 },
@@ -77,8 +77,8 @@ const questions = [
     },
 
 
-      //NOMOR 7
-      {
+    //NOMOR 7
+    {
         question: 'Proses penyerbukan yang dibantu oleh angin disebut...',
         options: [
             { label: 'a. Hidrofil', value: 0 },
@@ -90,8 +90,8 @@ const questions = [
     },
 
 
-      //NOMOR 8
-      {
+    //NOMOR 8
+    {
         question: 'Jaringan yang bertugas mengangkut hasil fotosintesis dari daun ke seluruh bagian tumbuhan adalah...',
         options: [
             { label: 'a. Xilem', value: 0 },
@@ -103,8 +103,8 @@ const questions = [
     },
 
 
-      //NOMOR 9
-      {
+    //NOMOR 9
+    {
         question: 'Tumbuhan yang menyimpan cadangan makanan di batang adalah',
         options: [
             { label: 'a. Singkong', value: 0 },
@@ -116,8 +116,8 @@ const questions = [
     },
 
 
-      //NOMOR 10
-      {
+    //NOMOR 10
+    {
         question: 'Bagian dari bunga yang berkembang menjadi biji adalah...',
         options: [
             { label: 'a. Stigma', value: 0 },
@@ -130,8 +130,8 @@ const questions = [
     },
 
 
-     // NOMOR 11
-     {
+    // NOMOR 11
+    {
         question: 'Tumbuhan yang menyimpan cadangan makanan di akar adalah...',
         options: [
             { label: 'a. Kentang', value: 0 },
@@ -178,8 +178,8 @@ const questions = [
         correctAnswer: 2
     },
 
-     //NOMOR 15
-     {
+    //NOMOR 15
+    {
         question: 'Proses dimana tumbuhan menghasilkan energi dari glukosa disebut...',
         options: [
             { label: 'a. Fotosintesis', value: 0 },
@@ -190,8 +190,8 @@ const questions = [
         correctAnswer: 1
     },
 
-      //NOMOR 16
-      {
+    //NOMOR 16
+    {
         question: 'Jaringan yang berfungsi untuk memperkuat dan mendukung struktur tumbuhan adalah...',
         options: [
             { label: 'a. Kolenkim', value: 0 },
@@ -203,8 +203,8 @@ const questions = [
     },
 
 
-      //NOMOR 17
-      {
+    //NOMOR 17
+    {
         question: 'Perkembangbiakan vegetatif alami pada tumbuhan terjadi melalui...',
         options: [
             { label: 'a. Biji', value: 0 },
@@ -216,8 +216,8 @@ const questions = [
     },
 
 
-      //NOMOR 18
-      {
+    //NOMOR 18
+    {
         question: 'Fungsi dari lapisan lilin pada daun adalah...',
         options: [
             { label: 'a. Mengurangi penguapan air', value: 0 },
@@ -229,8 +229,8 @@ const questions = [
     },
 
 
-      //NOMOR 19
-      {
+    //NOMOR 19
+    {
         question: 'Bagian dari tumbuhan yang berfungsi sebagai alat transportasi air dan nutrisi adalah...',
         options: [
             { label: 'a. Xilem dan floem', value: 0 },
@@ -242,8 +242,8 @@ const questions = [
     },
 
 
-      //NOMOR 20
-      {
+    //NOMOR 20
+    {
         question: 'Proses penyerbukan yang dibantu oleh hewan disebut...',
         options: [
             { label: 'a. Hidrofil', value: 0 },
@@ -287,13 +287,13 @@ export default function TingkatDua({ navigation }) {
 
     return (
         <ImageBackground source={require('../../assets/bgsplash.png')} style={styles.background}>
-            <MyHeader judul="Yuk Coba Quiz Menarik!" onPress={backPage}/>
+            <MyHeader judul="Yuk Coba Quiz Menarik!" onPress={backPage} />
             {showScore ? (
                 <View style={styles.scoreContainer}>
                     <Image source={require('../../assets/badge.png')} style={styles.scoreIcon} />
                     <Text style={styles.scoreText}>Skor Quiz</Text>
                     <Text style={styles.levelText}>Tingkat 1</Text>
-                    <Text style={styles.score}>{score * 25}</Text>
+                    <Text style={styles.score}>{score * 5}</Text>
                     <TouchableOpacity onPress={restartQuiz} style={styles.button}>
                         <Text style={styles.buttonText}>Kerjakan Soal Lagi</Text>
                     </TouchableOpacity>
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding:10
+        padding: 10
     },
     scoreIcon: {
         width: 100,
